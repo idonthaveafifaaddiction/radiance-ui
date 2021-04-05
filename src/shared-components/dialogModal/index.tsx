@@ -9,6 +9,7 @@ import { REACT_PORTAL_SECTION_ID } from '../../constants/portals';
 import { CrossIcon } from '../../icons';
 import Style from './style';
 import { Colors, primaryTheme, secondaryTheme } from '../../constants';
+import { Typography } from '../typography';
 
 export interface DialogModalProps {
   /**
@@ -91,36 +92,42 @@ export const DialogModal = ({
     >
       {(transitionState): JSX.Element => (
         // eslint-disable-next-line react/jsx-props-no-spreading
-        <Style.Overlay className={transitionState} {...rest}>
+        <div css={Style.overlay} className={transitionState} {...rest}>
           <FocusScope contain restoreFocus autoFocus>
-            <Style.ModalContainer
-              backgroundColor={backgroundColorWithTheme}
+            <div
+              css={Style.modalContainer(backgroundColorWithTheme)}
               className={transitionState}
               onKeyDown={handleKeyDown}
             >
               {onCloseIconClick && (
-                <Style.CrossIconContainer
-                  backgroundColor={backgroundColorWithTheme}
+                <div
+                  css={Style.crossIconContainer(backgroundColorWithTheme)}
                   onClick={handleCloseIntent}
                   role="button"
                   tabIndex={0}
                   aria-label="Close modal"
                 >
                   <CrossIcon />
-                </Style.CrossIconContainer>
+                </div>
               )}
-              {!!title && <Style.ModalTitle>{title}</Style.ModalTitle>}
+              {!!title && (
+                <Typography.Title css={Style.modalTitle}>
+                  {title}
+                </Typography.Title>
+              )}
               {children}
-            </Style.ModalContainer>
+            </div>
           </FocusScope>
-        </Style.Overlay>
+        </div>
       )}
     </Transition>,
     domNode.current,
   );
 };
 
-DialogModal.Paragraph = Style.Paragraph;
+DialogModal.Paragraph = ({ children }: { children: React.ReactNode }) => (
+  <p css={Style.paragraph}>{children}</p>
+);
 
 DialogModal.propTypes = {
   backgroundColor: PropTypes.oneOf([
